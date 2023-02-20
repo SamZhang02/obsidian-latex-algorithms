@@ -6,6 +6,15 @@ interface MyPluginSettings {
 	mySetting: string;
 }
 
+interface QuickLatexSettings {
+  algorithmTitle_toggle:boolean;
+  ioLoops_toggle:boolean;
+  ensure_toggle:boolean;
+  forLoops_toggle:boolean;
+  whileLoops_toggle:boolean;
+  ifElse_toggle:boolean;
+  state_toggle:boolean;
+}
 const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: 'default'
 }
