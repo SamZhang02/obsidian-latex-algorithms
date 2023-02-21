@@ -1,6 +1,6 @@
 {
   "name": "obsidian-latex-algorithms",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Plugin to facilitate writing algorithm blocks in LaTeX",
   "main": "main.js",
   "scripts": {

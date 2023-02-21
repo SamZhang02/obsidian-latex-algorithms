@@ -1,6 +1,8 @@
 import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { Prec, Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
+import {version as VERSION} from './manifest.json';
+
 
 interface LatexAlgoSettings{
 	algorithmTitle_toggle:boolean;
@@ -30,7 +32,7 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 
 export default class LatexAlgorithms extends Plugin {
 	settings: LatexAlgoSettings;
-	version = "0.1.0";
+	version = VERSION;
 
 	private readonly makeExtension = (): Extension => Prec.high(keymap.of([
 		{
@@ -232,7 +234,6 @@ export default class LatexAlgorithms extends Plugin {
 
 	async onload() {
 		console.log("Loading Latex Algorithms")
-		// check if the user is inside latex brackets conditional statement
 		this.registerEditorExtension(this.makeExtension());
 		await this.loadSettings();
 		this.addSettingTab(new LatexAlgorithmsSetting(this.app, this));
