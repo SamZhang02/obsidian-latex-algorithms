@@ -8,8 +8,7 @@ interface LatexAlgoSettings{
 	algorithmTitle_toggle:boolean;
 	ioLoops_toggle:boolean;
 	ensure_toggle:boolean;
-	forLoops_toggle:boolean;
-	whileLoops_toggle:boolean;
+	Loops_toggle:boolean;
 	ifElse_toggle:boolean;
 	state_toggle:boolean;
 	switchCase_toggle:boolean;
@@ -21,8 +20,7 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 	  algorithmTitle_toggle: true,
 	  ioLoops_toggle: true,
 	  ensure_toggle: true,
-	  forLoops_toggle: true,
-	  whileLoops_toggle: true,
+	  Loops_toggle: true,
 	  ifElse_toggle: true,
 	  state_toggle: true,
 	  switchCase_toggle: true,
@@ -103,7 +101,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\For":
-						if (this.settings.forLoops_toggle){
+						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{For } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:20 + commandCutoff});
 						}
@@ -113,7 +111,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\While":
-						if (this.settings.whileLoops_toggle){
+						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{While } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:22 + commandCutoff});
 						}
@@ -123,7 +121,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 						
 					case "\\EndFor":
-						if (this.settings.forLoops_toggle){
+						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{end for}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:16 + commandCutoff});
 						}
@@ -133,9 +131,29 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\EndWhile":
-						if (this.settings.whileLoops_toggle){
+						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{end while}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:18 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Continue":
+						if (this.settings.Loops_toggle){
+							editor.replaceRange("\\textbf{continue}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:17 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Break":
+						if (this.settings.Loops_toggle){
+							editor.replaceRange("\\textbf{break}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:14 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -204,7 +222,7 @@ export default class LatexAlgorithms extends Plugin {
 					case "\\Default":
 						if (this.settings.switchCase_toggle){
 							editor.replaceRange("\\textbf{Default } \\text{} \\textbf{:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
-							editor.setCursor({line:cursorPlace.line, ch:25 + commandCutoff});
+							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -352,7 +370,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic Title for Algorithm')
-		.setDesc('Typing /Algo will automatically generate a title for an algorithm block')
+		.setDesc('Typing \\Algorithm will automatically generate a title for an algorithm block')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.algorithmTitle_toggle)
 			.onChange(async (value) => {
@@ -363,7 +381,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		
 		new Setting(containerEl)
 		.setName('Automatic Input/Output subtitles')
-		.setDesc('Typing /Input or /Output will automatically generate an input/output subtitle.')
+		.setDesc('Typing \\Input or \\Output will automatically generate an input/output subtitle.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ioLoops_toggle)
 			.onChange(async (value) => {
@@ -375,7 +393,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic Ensure subtitle')
-		.setDesc('Typing /Ensure will automatically generate an ensure subtitle.')
+		.setDesc('Typing \\Ensure will automatically generate an ensure subtitle.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ensure_toggle)
 			.onChange(async (value) => {
@@ -386,24 +404,12 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		));
 
 		new Setting(containerEl)
-		.setName('Automatic For Loops')
-		.setDesc('Typing /For will automatically generate a for loop.' + ' End the loop with /EndFor.')
+		.setName('Automatic Loops')
+		.setDesc('Typing \\For or \\While will automatically generate a loop.' + ' End the loop with \\End<For/While>.')
 		.addToggle((toggle) => toggle
-			.setValue(this.plugin.settings.forLoops_toggle)
+			.setValue(this.plugin.settings.Loops_toggle)
 			.onChange(async (value) => {
-				this.plugin.settings.forLoops_toggle= value;
-				await this.plugin.saveData(this.plugin.settings);
-				this.display();
-			}
-		));
-
-		new Setting(containerEl)
-		.setName('Automatic While Loops')
-		.setDesc('Typing /While will automatically generate a while loop.' + ' End the loop with /EndWhile.')
-		.addToggle((toggle) => toggle
-			.setValue(this.plugin.settings.whileLoops_toggle)
-			.onChange(async (value) => {
-				this.plugin.settings.whileLoops_toggle= value;
+				this.plugin.settings.Loops_toggle= value;
 				await this.plugin.saveData(this.plugin.settings);
 				this.display();
 			}
@@ -411,7 +417,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic If/ElseIf/Else')
-		.setDesc('Typing /If, /ElseIf, /Else will automatically generate the approriate conditional statement.' + ' End the statement with /EndIf.')
+		.setDesc('Typing \\If, \\ElseIf, \\Else will automatically generate the approriate conditional statement.' + ' End the statement with \\EndIf.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ifElse_toggle)
 			.onChange(async (value) => {
@@ -422,8 +428,8 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		));
 
 		new Setting(containerEl)
-		.setName('Automatic /State')
-		.setDesc('Typing /State will automatically generate a state block.')
+		.setName('Automatic \\State')
+		.setDesc('Typing \\State will automatically generate a state block.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.state_toggle)
 			.onChange(async (value) => {
@@ -435,7 +441,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic Switch/Case/Default')
-		.setDesc('Typing /Switch, /Case, /Default will automatically generate the approriate conditional statement.' + ' End the statement with /End<Switch/Case/Default>.')
+		.setDesc('Typing \\Switch, \\Case, \\Default will automatically generate the approriate conditional statement.' + ' End the statement with \\End<Switch/Case/Default>.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.switchCase_toggle)
 			.onChange(async (value) => {
