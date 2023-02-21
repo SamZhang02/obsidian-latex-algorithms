@@ -200,6 +200,17 @@ export default class LatexAlgorithms extends Plugin {
 						}
 						break;
 					
+					case "\\Default":
+						if (this.settings.switchCase_toggle){
+							editor.replaceRange("\\textbf{Default } \\text{} \\textbf{:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:25 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					
 					case "\\Return":
 						if (this.settings.return_toggle){
 							editor.replaceRange("\\textbf{Return } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
