@@ -28,14 +28,16 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 	return_toggle: true,
 }
 
-export default class MyPlugin extends Plugin {
+export default class LatexAlgorithms extends Plugin {
 	settings: LatexAlgoSettings;
 
 	async onload() {
 		console.log("Loading Latex Algorithms")
+		// check if the user is inside latex brackets conditional statement
+		this.registerEditorExtension(this.makeExtension());
 		await this.loadSettings();
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
+		this.addSettingTab(new LatexAlgorithmsSetting(this.app, this));
+		
 	}
 
 	onunload() {
