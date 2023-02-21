@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 	  whileLoops_toggle: true,
 	  ifElse_toggle: true,
 	  state_toggle: true,
-	  switchCase_toggle: true
+	  fastIndentation_toggle: true,
 }
 
 export default class MyPlugin extends Plugin {
@@ -78,6 +78,17 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		containerEl.createEl('h2', {text: 'LaTeX Algorithms - Settings'});
+
+		new Setting(containerEl)
+		.setName("Fast indentation")
+		.setDesc("SHIFT + TAB will indent the current line by 4 spaces.")
+		.addToggle((toggle) => toggle
+			.setValue(this.plugin.settings.fastIndentation_toggle)
+			.onChange(async (value) => {
+				this.plugin.settings.fastIndentation_toggle= value;
+				await this.plugin.saveData(this.plugin.settings);
+				this.display();
+			}));
 
 		new Setting(containerEl)
 		.setName('Automatic Title for Algorithm')
