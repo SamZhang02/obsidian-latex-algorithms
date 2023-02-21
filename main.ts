@@ -30,6 +30,7 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 
 export default class LatexAlgorithms extends Plugin {
 	settings: LatexAlgoSettings;
+	version = "0.1.0";
 
 	private readonly makeExtension = (): Extension => Prec.high(keymap.of([
 		{
@@ -322,7 +323,8 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl('h2', {text: 'LaTeX Algorithms - Settings'});
+		containerEl.createEl('h1', {text: 'LaTeX Algorithms'});
+		containerEl.createEl('h2', {text: 'Key Settings'});
 
 		new Setting(containerEl)
 		.setName("Fast indentation")
@@ -429,5 +431,30 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 				this.display();
 			}
 		));
+
+	containerEl.createEl('h2', {text: 'Information'});
+		new Setting(containerEl)
+		.setName("Version " + this.plugin.version)
+		.setDesc('If you find an issue with the software or would like to contribute, visit the GitHub reposity of this plugin.')
+		.addButton((button) => button
+			.setButtonText('Take me there!')
+			.setClass('mod-cta')
+			.onClick(() => {
+				window.open("https://www.github.com/SamZhang02/obsidian-latex-algorithms");
+			}
+		));
+
+	containerEl.createEl('h2', {text: 'Support the developer!'});
+		new Setting(containerEl)
+		.setName('Buy me a coffee!')
+		.setDesc('If you like this plugin, consider buying me a coffee!')
+		.addButton((button) => button
+			.setButtonText('Buy me a coffee!')
+			.setClass('mod-cta')
+			.onClick(() => {
+				window.open('https://www.buymeacoffee.com/samzhang');
+			}
+		));
 	}
+
 }
