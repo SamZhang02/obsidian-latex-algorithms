@@ -16,12 +16,6 @@ This plugin reads previous user inputs and converts them into standard LaTeX alg
 
 It is recommended to use this within an aligned LaTeX block, and align (`&`) at the first character of each line.
 
-```latex
-$$\begin{align*}
-%%Your pseudocode here%%
-\end{align*}$$
-```
-
 ![long_demo](media/long_demo.gif)
 
 A great addition to this plugin could be [Quick LaTeX for Obsidian](https://github.com/joeyuping/quick_latex_obsidian) and/or VIM keybindings. With these tools, you can achieve quite a fast workflow with this plugin.
