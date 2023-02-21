@@ -141,6 +141,7 @@ export default class LatexAlgorithms extends Plugin {
 							editor.replaceSelection(" ");
 						}
 						break;
+
 					case "\\If":
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{If } \\text{} \\textbf{ then:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
@@ -410,7 +411,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic If/ElseIf/Else')
-		.setDesc('Typing /If, /ElseIf, /Else will automatically generate the approriate conditional statement.' + ' End the statement with /End<statement>.')
+		.setDesc('Typing /If, /ElseIf, /Else will automatically generate the approriate conditional statement.' + ' End the statement with /EndIf.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ifElse_toggle)
 			.onChange(async (value) => {
@@ -434,7 +435,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 		new Setting(containerEl)
 		.setName('Automatic Switch/Case/Default')
-		.setDesc('Typing /Switch, /Case, /Default will automatically generate the approriate conditional statement.' + ' End the statement with /End<statement>.')
+		.setDesc('Typing /Switch, /Case, /Default will automatically generate the approriate conditional statement.' + ' End the statement with /End<Switch/Case/Default>.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.switchCase_toggle)
 			.onChange(async (value) => {
