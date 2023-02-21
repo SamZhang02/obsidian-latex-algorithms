@@ -46,6 +46,53 @@ export default class MyPlugin extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
+	private readonly withinMath = (
+		editor: Editor
+	): Boolean => {
+		// check if cursor within $$
+		const position = editor.getCursor()
+		const current_line = editor.getLine(position.line);
+		let cursor_index = position.ch
+		let from = 0;
+		let found = current_line.indexOf('$', from);
+		while (found != -1 && found < cursor_index) {
+			let next_char = editor.getRange(
+				{ line: position.line, ch: found + 1 },
+				{ line: position.line, ch: found + 2 })
+			let prev_char = editor.getRange(
+				{ line: position.line, ch: found - 1 },
+				{ line: position.line, ch: found })
+			if (next_char == '$' || prev_char == '$' || next_char == ' ') {
+				from = found + 1;
+				found = current_line.indexOf('$', from);
+				continue;
+			} else {
+				from = found + 1;
+				let next_found = current_line.indexOf('$', from);
+				if (next_found == -1) {
+					return false;
+				} else if (cursor_index > found && cursor_index <= next_found) {
+					return true;
+				} else {
+					from = next_found + 1;
+					found = current_line.indexOf('$', from);
+					continue;
+				}
+			}
+		}
+
+		const document_text = editor.getValue();
+		cursor_index = editor.posToOffset(position);
+		from = 0;
+		found = document_text.indexOf('$$', from);
+		let count = 0;
+		while (found != -1 && found < cursor_index) {
+			count += 1;
+			from = found + 2;
+			found = document_text.indexOf('$$', from);
+		}
+		return count % 2 == 1;
+	};
 }
 
 class SampleModal extends Modal {
