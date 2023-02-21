@@ -31,6 +31,204 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 export default class LatexAlgorithms extends Plugin {
 	settings: LatexAlgoSettings;
 
+	private readonly makeExtension = (): Extension => Prec.high(keymap.of([
+		{
+			key: "Space",
+			run: () :boolean => {
+				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (!view) return false;
+
+				const editor  = view.editor;
+				if (!this.withinMath(editor)) return false;
+
+				const cursorPlace = editor.getCursor();
+				const line = editor.getLine(cursorPlace.line)
+				const commandCutoff = this.getCommand(line.slice(0,cursorPlace.ch));
+
+				if (commandCutoff === null) return false;
+
+				const command = line.slice(commandCutoff, cursorPlace.ch);
+				switch (command) {
+					case "\\Algorithm":	
+						if (this.settings.algorithmTitle_toggle){
+							editor.replaceRange(`\\textbf{Algorithm } \\text{}`, {line:cursorPlace.line, ch:commandCutoff}, {line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:26 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Input":
+						if (this.settings.ioLoops_toggle){
+							editor.replaceRange("\\textbf{Input: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Output":
+						if (this.settings.ioLoops_toggle){
+							editor.replaceRange("\\textbf{Output: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Ensure":
+						if (this.settings.ensure_toggle){
+							editor.replaceRange("\\textbf{Ensure: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\State":
+						if (this.settings.state_toggle){
+							editor.replaceRange("\\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:6 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					
+					case "\\For":
+						if (this.settings.forLoops_toggle){
+							editor.replaceRange("\\textbf{For } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:20 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					
+					case "\\While":
+						if (this.settings.whileLoops_toggle){
+							editor.replaceRange("\\textbf{While } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:22 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+						
+					case "\\EndFor":
+						if (this.settings.forLoops_toggle){
+							editor.replaceRange("\\textbf{end for}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:16});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\EndWhile":
+						if (this.settings.whileLoops_toggle){
+							editor.replaceRange("\\textbf{end while}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:18});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					case "\\If":
+						if (this.settings.ifElse_toggle){
+							editor.replaceRange("\\textbf{If } \\text{} \\textbf{ then:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:19 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Else":
+						if (this.settings.ifElse_toggle){
+							editor.replaceRange("\\textbf{Else:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:15});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\ElseIf":
+						if (this.settings.ifElse_toggle){
+							editor.replaceRange("\\textbf{Else if } \\text{} \\textbf{then:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\EndIf":
+						if (this.settings.ifElse_toggle){
+							editor.replaceRange("\\textbf{end if}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:15});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					case "\\Switch":
+						if (this.settings.switchCase_toggle){
+							editor.replaceRange("\\textbf{Switch } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Case":
+						if (this.settings.switchCase_toggle){
+							editor.replaceRange("\\textbf{Case } \\text{} \\textbf{:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:21 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					
+					case "\\Return":
+						if (this.settings.return_toggle){
+							editor.replaceRange("\\textbf{Return } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					default:
+						editor.replaceSelection(" ");
+				}
+				return true;
+			}
+		},
+		{
+			key: "Shift-Tab",
+			run: () :boolean => {
+				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (!view) return false;
+
+				const editor = view.editor;
+				if (!this.withinMath(editor)) return false;
+
+				editor.replaceSelection("\\quad ");
+				return true;
+			}
+
+		}
+	]));
+
 	async onload() {
 		console.log("Loading Latex Algorithms")
 		// check if the user is inside latex brackets conditional statement
@@ -52,6 +250,16 @@ export default class LatexAlgorithms extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
+
+	private getCommand = (str:string) => {
+		for (let i = str.length-1;i>= 0; i--){
+			if (str[i] === "\\") {
+				return i;
+			}
+		}
+		return null;
+	}
+
 	private readonly withinMath = (
 		editor: Editor
 	): Boolean => {
