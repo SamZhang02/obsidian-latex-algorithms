@@ -125,7 +125,7 @@ export default class LatexAlgorithms extends Plugin {
 					case "\\EndFor":
 						if (this.settings.forLoops_toggle){
 							editor.replaceRange("\\textbf{end for}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
-							editor.setCursor({line:cursorPlace.line, ch:16});
+							editor.setCursor({line:cursorPlace.line, ch:16 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -135,7 +135,7 @@ export default class LatexAlgorithms extends Plugin {
 					case "\\EndWhile":
 						if (this.settings.whileLoops_toggle){
 							editor.replaceRange("\\textbf{end while}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
-							editor.setCursor({line:cursorPlace.line, ch:18});
+							editor.setCursor({line:cursorPlace.line, ch:18 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -154,7 +154,7 @@ export default class LatexAlgorithms extends Plugin {
 					case "\\Else":
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{Else:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
-							editor.setCursor({line:cursorPlace.line, ch:15});
+							editor.setCursor({line:cursorPlace.line, ch:15 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -174,7 +174,7 @@ export default class LatexAlgorithms extends Plugin {
 					case "\\EndIf":
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{end if}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
-							editor.setCursor({line:cursorPlace.line, ch:15});
+							editor.setCursor({line:cursorPlace.line, ch:15 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
