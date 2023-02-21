@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { Prec, Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 
@@ -307,22 +307,6 @@ export default class LatexAlgorithms extends Plugin {
 		}
 		return count % 2 == 1;
 	};
-}
-
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		const {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
-	}
 }
 
 class LatexAlgorithmsSetting extends PluginSettingTab {
