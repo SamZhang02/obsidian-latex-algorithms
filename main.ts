@@ -1,16 +1,18 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
-// Remember to rename these classes and interfaces!
+import { Prec, Extension } from '@codemirror/state';
+import { keymap } from '@codemirror/view';
 
 interface LatexAlgoSettings{
-  algorithmTitle_toggle:boolean;
-  ioLoops_toggle:boolean;
-  ensure_toggle:boolean;
-  forLoops_toggle:boolean;
-  whileLoops_toggle:boolean;
-  ifElse_toggle:boolean;
-  state_toggle:boolean;
-  switchCase_toggle:boolean;
+	algorithmTitle_toggle:boolean;
+	ioLoops_toggle:boolean;
+	ensure_toggle:boolean;
+	forLoops_toggle:boolean;
+	whileLoops_toggle:boolean;
+	ifElse_toggle:boolean;
+	state_toggle:boolean;
+	switchCase_toggle:boolean;
+	fastIndentation_toggle: boolean;
+	return_toggle: boolean;
 }
 
 const DEFAULT_SETTINGS: LatexAlgoSettings ={
@@ -21,7 +23,9 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 	  whileLoops_toggle: true,
 	  ifElse_toggle: true,
 	  state_toggle: true,
+	  switchCase_toggle: true,
 	  fastIndentation_toggle: true,
+	return_toggle: true,
 }
 
 export default class MyPlugin extends Plugin {
@@ -111,10 +115,10 @@ class SampleModal extends Modal {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+class LatexAlgorithmsSetting extends PluginSettingTab {
+	plugin: LatexAlgorithms;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: LatexAlgorithms) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
