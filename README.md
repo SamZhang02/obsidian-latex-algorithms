@@ -32,6 +32,24 @@ The functionalities of this plugin currently include:
 - Switch cases
 - `\State`
 
+### Currently suppored keywords
+| Titles     |        |         |         |
+|------------|--------|---------|---------|
+| \Algorithm | \Input | \Output | \Ensure |
+
+| Conditionals |         |       |        | 
+|--------------|---------|-------|--------|
+| \If          | \ElseIf | \Else | \EndIf |
+| \Switch      | \Case   | \Default| 
+
+| Loops     |        |         |         |
+|------------|--------|---------|---------|
+| \For | \EndFor | \While | \EndWhile |   |
+|\Break | \Continue | 
+
+| Other Common Keywords |
+|--------------|
+| \State       |
 ## Credits
 
 The development of this plugin used the API wrapper from [Obsidian](https://github.com/obsidianmd/obsidian-api).
