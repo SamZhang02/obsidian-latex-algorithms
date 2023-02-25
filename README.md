@@ -32,7 +32,7 @@ The functionalities of this plugin currently include:
 - Switch cases
 - `\State`
 
-### Currently suppored keywords
+### Currently supported keywords
 | Titles     |        |         |         |
 |------------|--------|---------|---------|
 | \Algorithm | \Input | \Output | \Ensure |
