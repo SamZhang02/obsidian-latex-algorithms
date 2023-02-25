@@ -1,8 +1,6 @@
 import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { Prec, Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
-import {version as VERSION} from './manifest.json';
-
 
 interface LatexAlgoSettings{
 	algorithmTitle_toggle:boolean;
@@ -30,7 +28,7 @@ const DEFAULT_SETTINGS: LatexAlgoSettings ={
 
 export default class LatexAlgorithms extends Plugin {
 	settings: LatexAlgoSettings;
-	version = VERSION;
+	lversion = this.manifest.version;
 
 	private readonly makeExtension = (): Extension => Prec.high(keymap.of([
 		{
@@ -453,7 +451,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 
 	containerEl.createEl('h2', {text: 'Information'});
 		new Setting(containerEl)
-		.setName("Version " + this.plugin.version)
+		.setName("Version " + this.plugin.manifest.version)
 		.setDesc('If you find an issue with the software or would like to contribute, visit the GitHub reposity of this plugin.')
 		.addButton((button) => button
 			.setButtonText('Take me there!')
