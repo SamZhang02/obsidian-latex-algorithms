@@ -12,18 +12,21 @@ interface LatexAlgoSettings{
 	switchCase_toggle:boolean;
 	fastIndentation_toggle: boolean;
 	return_toggle: boolean;
+	proofs_toggle: boolean;
 }
 
 const DEFAULT_SETTINGS: LatexAlgoSettings ={
-	  algorithmTitle_toggle: true,
-	  ioLoops_toggle: true,
-	  ensure_toggle: true,
-	  Loops_toggle: true,
-	  ifElse_toggle: true,
-	  state_toggle: true,
-	  switchCase_toggle: true,
-	  fastIndentation_toggle: true,
+	algorithmTitle_toggle: true,
+	ioLoops_toggle: true,
+	ensure_toggle: true,
+	Loops_toggle: true,
+	ifElse_toggle: true,
+	state_toggle: true,
+	switchCase_toggle: true,
+	fastIndentation_toggle: true,
 	return_toggle: true,
+	proofs_toggle: true,
+
 }
 
 export default class LatexAlgorithms extends Plugin {
@@ -230,8 +233,88 @@ export default class LatexAlgorithms extends Plugin {
 					
 					case "\\Return":
 						if (this.settings.return_toggle){
-							editor.replaceRange("\\textbf{Return } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.replaceRange("\\textbf{return } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\EndSwitch":
+						if (this.settings.switchCase_toggle){
+							editor.replaceRange("\\textbf{end switch}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:19 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Theorem":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textbf{Theorem: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:25 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Lemma":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textbf{Lemma: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Corollary":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textbf{Corollary: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:27 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Definition":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textbf{Definition: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:28 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Remark":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textbf{Remark: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+
+					case "\\Proof":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\textit{Proof. } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
+						}
+						else{
+							editor.replaceSelection(" ");
+						}
+						break;
+					
+					case "\\QED":
+						if (this.settings.proofs_toggle){
+							editor.replaceRange("\\text{QED}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
+							editor.setCursor({line:cursorPlace.line, ch:10 + commandCutoff});
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -379,7 +462,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		
 		new Setting(containerEl)
 		.setName('Automatic Input/Output subtitles')
-		.setDesc('Typing \\Input or \\Output will automatically generate an input/output subtitle.')
+		.setDesc('Typing \\Input, \\Output or \\Ensure will automatically generate the appropriate subtitle.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ioLoops_toggle)
 			.onChange(async (value) => {
@@ -390,12 +473,12 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		));
 
 		new Setting(containerEl)
-		.setName('Automatic Ensure subtitle')
-		.setDesc('Typing \\Ensure will automatically generate an ensure subtitle.')
+		.setName('Automatic Proof Keywords')
+		.setDesc('Automatic generation of proof keywords with commands such as \\Proof, \\Theorem, etc..')
 		.addToggle((toggle) => toggle
-			.setValue(this.plugin.settings.ensure_toggle)
+			.setValue(this.plugin.settings.proofs_toggle)
 			.onChange(async (value) => {
-				this.plugin.settings.ensure_toggle= value;
+				this.plugin.settings.proofs_toggle= value;
 				await this.plugin.saveData(this.plugin.settings);
 				this.display();
 			}
@@ -414,7 +497,7 @@ class LatexAlgorithmsSetting extends PluginSettingTab {
 		));
 
 		new Setting(containerEl)
-		.setName('Automatic If/ElseIf/Else')
+		.setName('Automatic Conditionals')
 		.setDesc('Typing \\If, \\ElseIf, \\Else will automatically generate the approriate conditional statement.' + ' End the statement with \\EndIf.')
 		.addToggle((toggle) => toggle
 			.setValue(this.plugin.settings.ifElse_toggle)
