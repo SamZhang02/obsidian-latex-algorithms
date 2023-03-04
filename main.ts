@@ -370,11 +370,11 @@ export default class LatexAlgorithms extends Plugin {
 				if (!this.withinMath(editor)) return false;
 
 				const currLine = editor.getLine(editor.getCursor().line);
-				let commandCutoff = 0;
+				let cutOff = 0;
 
-				while (currLine[commandCutoff] === "&") commandCutoff++;
+				while (currLine[cutOff] === "&") cutOff++;
 
-				editor.setSelection({line:editor.getCursor().line, ch:commandCutoff});
+				editor.setSelection({line:editor.getCursor().line, ch:cutOff});
 				editor.replaceSelection("\\quad ");
 				editor.setCursor({line:editor.getCursor().line, ch:editor.getLine(editor.getCursor().line).length-1}); 
 
