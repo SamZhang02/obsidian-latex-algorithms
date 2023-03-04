@@ -41,7 +41,6 @@ export default class LatexAlgorithms extends Plugin {
 				if (!view) return false;
 
 				const editor  = view.editor;
-				if (!this.withinMath(editor)) return false;
 
 				const cursorPlace = editor.getCursor();
 				const line = editor.getLine(cursorPlace.line)
@@ -53,8 +52,15 @@ export default class LatexAlgorithms extends Plugin {
 				switch (command) {
 					case "\\Algorithm":	
 						if (this.settings.algorithmTitle_toggle){
+							if (!this.withinMath(editor)) {
+								editor.replaceRange(" ", {line:cursorPlace.line, ch:commandCutoff}, {line:cursorPlace.line, ch:cursorPlace.ch});
+								editor.replaceSelection( "\n$$\\begin{align*}\\\\ \n\\textbf{Algorithm: } \\text{}\\\\ \n\\textbf{Input: } \\text{}\\\\ \n\\textbf{Output: } \\text{}\\\\ \n\\end{align*}$$")
+								editor.setCursor({line:cursorPlace.line+2, ch:27});
+							} 
+							else{
 							editor.replaceRange(`\\textbf{Algorithm } \\text{}`, {line:cursorPlace.line, ch:commandCutoff}, {line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:26 + commandCutoff});
+							}
 						}
 						else{
 							editor.replaceSelection(" ");
@@ -62,6 +68,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Input":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ioLoops_toggle){
 							editor.replaceRange("\\textbf{Input: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
@@ -72,6 +79,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Output":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ioLoops_toggle){
 							editor.replaceRange("\\textbf{Output: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
@@ -82,6 +90,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Ensure":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ensure_toggle){
 							editor.replaceRange("\\textbf{Ensure: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
@@ -92,6 +101,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\State":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.state_toggle){
 							editor.replaceRange("\\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:6 + commandCutoff});
@@ -102,6 +112,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\For":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{For } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:20 + commandCutoff});
@@ -112,6 +123,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\While":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{While } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:22 + commandCutoff});
@@ -122,6 +134,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 						
 					case "\\EndFor":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{end for}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:16 + commandCutoff});
@@ -132,6 +145,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\EndWhile":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{end while}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:18 + commandCutoff});
@@ -142,6 +156,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Continue":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{continue}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:17 + commandCutoff});
@@ -152,6 +167,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Break":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.Loops_toggle){
 							editor.replaceRange("\\textbf{break}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:14 + commandCutoff});
@@ -162,6 +178,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\If":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{If } \\text{} \\textbf{ then:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:19 + commandCutoff});
@@ -172,6 +189,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Else":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{Else:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:15 + commandCutoff});
@@ -182,6 +200,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\ElseIf":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{Else if } \\text{} \\textbf{then:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
@@ -192,6 +211,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\EndIf":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.ifElse_toggle){
 							editor.replaceRange("\\textbf{end if}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:15 + commandCutoff});
@@ -200,7 +220,9 @@ export default class LatexAlgorithms extends Plugin {
 							editor.replaceSelection(" ");
 						}
 						break;
+
 					case "\\Switch":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.switchCase_toggle){
 							editor.replaceRange("\\textbf{Switch } \\text{} \\textbf{ do:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
@@ -211,6 +233,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Case":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.switchCase_toggle){
 							editor.replaceRange("\\textbf{Case } \\text{} \\textbf{:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:21 + commandCutoff});
@@ -221,6 +244,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\Default":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.switchCase_toggle){
 							editor.replaceRange("\\textbf{Default } \\text{} \\textbf{:}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
@@ -232,6 +256,7 @@ export default class LatexAlgorithms extends Plugin {
 
 					
 					case "\\Return":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.return_toggle){
 							editor.replaceRange("\\textbf{return } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
@@ -242,6 +267,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\EndSwitch":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.switchCase_toggle){
 							editor.replaceRange("\\textbf{end switch}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:19 + commandCutoff});
@@ -252,6 +278,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Theorem":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textbf{Theorem: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:25 + commandCutoff});
@@ -262,6 +289,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Lemma":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textbf{Lemma: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
@@ -272,6 +300,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Corollary":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textbf{Corollary: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:27 + commandCutoff});
@@ -282,6 +311,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Definition":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textbf{Definition: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:28 + commandCutoff});
@@ -292,6 +322,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Remark":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textbf{Remark: } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:24 + commandCutoff});
@@ -302,6 +333,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 
 					case "\\Proof":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\textit{Proof. } \\text{}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:23 + commandCutoff});
@@ -312,6 +344,7 @@ export default class LatexAlgorithms extends Plugin {
 						break;
 					
 					case "\\QED":
+						if (!this.withinMath(editor)) return false;
 						if (this.settings.proofs_toggle){
 							editor.replaceRange("\\text{QED}", {line:cursorPlace.line, ch:commandCutoff},{line:cursorPlace.line, ch:cursorPlace.ch});
 							editor.setCursor({line:cursorPlace.line, ch:10 + commandCutoff});
