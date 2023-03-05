@@ -45,8 +45,8 @@ export default class LatexAlgorithms extends Plugin {
 						if (this.settings.algorithmTitle_toggle){
 							if (!this.withinMath(editor)) {
 								editor.replaceRange(" ", {line:cursorPlace.line, ch:commandCutoff}, {line:cursorPlace.line, ch:cursorPlace.ch});
-								editor.replaceSelection( "\n$$\\begin{align*}\\\\ \n&\\textbf{Algorithm: } \\text{}\\\\ \n&\\textbf{Input: } \\text{}\\\\ \n&\\textbf{Output: } \\text{}\\\\ \n\\end{align*}$$")
-								editor.setCursor({line:cursorPlace.line+2, ch:28});
+								editor.replaceSelection( "\n$$\\begin{align*}\\\\ \n&\\textbf{Algorithm } \\text{}\\\\ \n&\\textbf{Input: } \\text{}\\\\ \n&\\textbf{Output: } \\text{}\\\\ \n\\end{align*}$$")
+								editor.setCursor({line:cursorPlace.line+2, ch:27});
 							} 
 							else{
 							editor.replaceRange(`\\textbf{Algorithm } \\text{}`, {line:cursorPlace.line, ch:commandCutoff}, {line:cursorPlace.line, ch:cursorPlace.ch});
