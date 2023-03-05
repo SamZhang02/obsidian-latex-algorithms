@@ -348,6 +348,7 @@ export default class LatexAlgorithms extends Plugin {
 		{
 			key: "Shift-Tab",
 			run: () :boolean => {
+				console.log('test')
 				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 				if (!view) return false;
 
@@ -361,7 +362,7 @@ export default class LatexAlgorithms extends Plugin {
 
 				editor.setSelection({line:editor.getCursor().line, ch:cutOff});
 				editor.replaceSelection("\\quad ");
-				editor.setCursor({line:editor.getCursor().line, ch:editor.getLine(editor.getCursor().line).length-1}); 
+				editor.setCursor({line:editor.getCursor().line, ch: cutOff}); 
 
 				return true;
 			}
