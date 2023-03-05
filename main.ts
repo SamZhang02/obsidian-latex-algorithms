@@ -348,7 +348,6 @@ export default class LatexAlgorithms extends Plugin {
 		{
 			key: "Shift-Tab",
 			run: () :boolean => {
-				console.log('test')
 				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 				if (!view) return false;
 
