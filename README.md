@@ -16,13 +16,11 @@ I wrote this plugin so that I can easily take notes for my Algorithm and proof-b
 
 This plugin reads previous user inputs and converts them into standard LaTeX algorithm format upon detecting keywords, such as `\If`, `\For`, etc.
 
-It is recommended to use this within an aligned LaTeX block, and align (`&`) at the first character of each line.
-
 <p align="center">
   <img src="media/long_demo.gif">
 </p>
 
-A great addition to this plugin could be [Quick LaTeX for Obsidian](https://github.com/joeyuping/quick_latex_obsidian) and/or VIM keybindings. With these tools, you can achieve quite a fast workflow with this plugin.
+A great addition to this plugin could be [Quick LaTeX for Obsidian](https://github.com/joeyuping/quick_latex_obsidian) and/or VIM keybindings. With these tools, you can achieve quite a fast workflow.
 
 The functionalities of this plugin currently include:
 - Fast indentation with `Shift+Tab`.
